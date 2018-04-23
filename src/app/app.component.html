@@ -1,20 +1,59 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<mat-toolbar color="primary">
+  <span>DHIS2</span>
+  <span class="example-spacer"></span>
+  <button mat-button [matMenuTriggerFor]="appMenu">
+    <mat-icon>menu</mat-icon>
+    Menu
+  </button>
+</mat-toolbar>
 
+<mat-menu #appMenu="matMenu">
+  <a mat-menu-item href="https://mis.baylor-uganda.org/trackers/dhis-web-dashboard">Home</a>
+</mat-menu>
+
+<div class="example-container mat-elevation-z8">
+  <div class="example-header">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <mat-table #table [dataSource]="dataSource" matSort>
+    <!-- Position Column -->
+    <ng-container matColumnDef="eventDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Event Date</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.eventDate}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orgUnit">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Organization Unit</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.orgUnit}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="activity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Activity</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.activity}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="startDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Expected Start Date</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.startDate}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="implementor">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Implementor</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.implementor}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="element.status"> {{element.status}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20,50]"
+                 [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>
