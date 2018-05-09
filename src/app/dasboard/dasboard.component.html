@@ -1,0 +1,30 @@
+<div fxLayout="row" fxLayout.xs="column" style="height:840px" ngxSplit="row">
+  <div fxFlex="30%" ngxSplitArea class="c1r1">
+    <div class="c1r1_header">Activity</div>
+    <ngx-dropdown-treeview [config]="config" [items]="items" [buttonClass]="buttonClass"
+                           (selectedChange)="values = $event" (filterChange)="onFilterChange($event)">
+    </ngx-dropdown-treeview>
+  </div>
+  <div class="handle handle-row" ngxSplitHandle>
+    <i class="material-icons">&#xE25D;</i>
+  </div>
+  <div fxFlex="70%" ngxSplitArea>
+    <div fxLayout="column" fxFlexFill ngxSplit="column">
+      <div fxFlex="50%" ngxSplitArea class="c2r1_body">
+        <div class="c2r1_header">Report & Issues</div>
+
+      </div>
+      <div class="handle handle-column" ngxSplitHandle>
+        <i class="material-icons">&#xE25D;</i>
+      </div>
+      <div fxFlex="50%" ngxSplitArea class="c2r2">
+        <div class="c2r2_header">Actions</div>
+        <ul>
+          <li>List Item #1</li>
+          <li>List Item #2</li>
+          <li>List Item #3</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

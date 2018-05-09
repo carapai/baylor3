@@ -1,0 +1,69 @@
+<h1 mat-dialog-title>Adding Action</h1>
+<div mat-dialog-content>
+  <form [formGroup]="actionForm">
+    <mat-form-field>
+      <input matInput placeholder="Action" formControlName="action">
+    </mat-form-field>
+    <mat-error>
+      <span *ngIf="!actionForm.get('action').valid && actionForm.get('action').touched">Please provide action</span>
+    </mat-error>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker1" placeholder="Pick expected completion date" formControlName="expectedCompletionDate">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+    <mat-error>
+      <span *ngIf="!actionForm.get('expectedCompletionDate').valid && actionForm.get('expectedCompletionDate').touched">Please provide expected completion date</span>
+    </mat-error>
+
+    <mat-form-field>
+      <input matInput placeholder="Responsible person" formControlName="responsiblePerson">
+    </mat-form-field>
+    <mat-error>
+      <span *ngIf="!actionForm.get('responsiblePerson').valid && actionForm.get('responsiblePerson').touched">Please provide responsible person</span>
+    </mat-error>
+
+    <mat-form-field>
+      <mat-select placeholder="Action status" formControlName="actionStatus">
+        <mat-option *ngFor="let r of status" [value]="r.code">
+          {{ r.displayName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-error>
+      <span *ngIf="!actionForm.get('actionStatus').valid && actionForm.get('actionStatus').touched">Please select status</span>
+    </mat-error>
+
+    <!--<mat-form-field>-->
+      <!--<input matInput placeholder="Outcome" formControlName="outcome">-->
+    <!--</mat-form-field>-->
+
+    <mat-form-field>
+      <mat-select placeholder="Issue outcome" formControlName="outcome">
+        <mat-option *ngFor="let r of outcomes" [value]="r.code">
+          {{ r.displayName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-error>
+      <span *ngIf="!actionForm.get('outcome').valid && actionForm.get('outcome').touched">Please provide outcome</span>
+    </mat-error>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker2" placeholder="Pick outcome date" formControlName="outcomeDate">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    <mat-error>
+      <span *ngIf="!actionForm.get('outcomeDate').valid && actionForm.get('outcomeDate').touched">Please outcome date</span>
+    </mat-error>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="actionForm.value" cdkFocusInitial>OK</button>
+</div>

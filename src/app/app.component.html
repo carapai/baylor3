@@ -1,59 +1,14 @@
 <mat-toolbar color="primary">
   <span>DHIS2</span>
   <span class="example-spacer"></span>
+  <a routerLink="/activities" mat-button>Activities</a>
+  <a routerLink="/issues" mat-button>Issues</a>
   <button mat-button [matMenuTriggerFor]="appMenu">
     <mat-icon>menu</mat-icon>
     Menu
   </button>
 </mat-toolbar>
-
 <mat-menu #appMenu="matMenu">
   <a mat-menu-item href="https://mis.baylor-uganda.org/trackers/dhis-web-dashboard">Home</a>
 </mat-menu>
-
-<div class="example-container mat-elevation-z8">
-  <div class="example-header">
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
-  </div>
-  <mat-table #table [dataSource]="dataSource" matSort>
-    <!-- Position Column -->
-    <ng-container matColumnDef="eventDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Event Date</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.eventDate}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="orgUnit">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Organization Unit</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.orgUnit}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="activity">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Activity</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.activity}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="startDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Expected Start Date</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.startDate}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="implementor">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Implementor</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.implementor}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
-      <mat-cell *matCellDef="let element" [ngClass]="element.status"> {{element.status}}</mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-
-  <mat-paginator #paginator
-                 [pageSize]="10"
-                 [pageSizeOptions]="[5, 10, 20,50]"
-                 [showFirstLastButtons]="true">
-  </mat-paginator>
-</div>
+<router-outlet></router-outlet>

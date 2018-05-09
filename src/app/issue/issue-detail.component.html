@@ -1,0 +1,50 @@
+<div class="example-container">
+  <div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <span style="font-weight: bolder">
+          Issue: {{selectedIssue.issue}}
+        </span>
+      </mat-expansion-panel-header>
+      <p>
+        {{selectedIssue|json}}
+      </p>
+
+      <mat-action-row>
+        <button mat-button>Edit Activity</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </div>
+  <mat-toolbar>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+    <span class="example-spacer"></span>
+    <a routerLink="/activities/add" mat-icon-button>
+      <mat-icon>add</mat-icon>
+    </a>
+  </mat-toolbar>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Action</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.action}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actionStatus">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Action status </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <!--<a [routerLink]="['/activities', element.transactionCode,'related']">
+          {{element.transactionCode}}
+        </a>-->
+        {{element.actionStatus}}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50]" [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>
