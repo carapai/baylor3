@@ -1,9 +1,6 @@
 <div fxLayout="row" fxLayout.xs="column" style="height:840px" ngxSplit="row">
   <div fxFlex="30%" ngxSplitArea class="c1r1">
     <div class="c1r1_header">Activity</div>
-    <ngx-dropdown-treeview [config]="config" [items]="items" [buttonClass]="buttonClass"
-                           (selectedChange)="values = $event" (filterChange)="onFilterChange($event)">
-    </ngx-dropdown-treeview>
   </div>
   <div class="handle handle-row" ngxSplitHandle>
     <i class="material-icons">&#xE25D;</i>

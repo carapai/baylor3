@@ -3,19 +3,19 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <span style="font-weight: bolder">
-          Issue: {{selectedIssue.issue}}
+          Issue: {{selectedIssue['issue']}}
         </span>
       </mat-expansion-panel-header>
       <p>
-        {{selectedIssue|json}}
+        -
       </p>
-
-      <mat-action-row>
+      <!--<mat-action-row>
         <button mat-button>Edit Activity</button>
-      </mat-action-row>
+      </mat-action-row>-->
     </mat-expansion-panel>
   </div>
-  <mat-toolbar>
+  <div><h3>Actions</h3></div>
+  <!--<mat-toolbar>
     <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
@@ -23,7 +23,7 @@
     <a routerLink="/activities/add" mat-icon-button>
       <mat-icon>add</mat-icon>
     </a>
-  </mat-toolbar>
+  </mat-toolbar>-->
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="action">

@@ -1,43 +1,20 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {environment} from '../environments/environment';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../environments/environment';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
 
 import keysToCamelCase from './changeKeys';
-import {catchError} from 'rxjs/operators';
-import sum = require('lodash/fp/sum');
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 const API_URL = environment.apiUrl;
 
 
 @Injectable()
 export class ApiService {
-
-  reportDataElements = {
-    startDate: 'BNoMKfDs0Oj',
-    endDate: 'kc42dsL4xqA',
-    district: 'TjoNheffZEE',
-    date: 'bmYlImBre1I',
-    achievementsSummary: 'O7QsM6bgg6C',
-    achievements: 'ShLKMDTLfEp',
-    constraints: 'R9vh1aiBWJT',
-    lessons: 'F7RpXNihiHI'
-  };
-
-  actionDataElements = {
-    actionStatus: 'uHKB4dkX1fq',
-    closureDate: 'u6dTu8Ddewe',
-    outcomeDate: 'w00xeY8WbiE',
-    outcome: 'eQve0e2UQZB',
-    action: 'r7rY6fZhPtJ',
-    responsiblePerson: 'xA18H9INOMT',
-    expectedCompletionDate: 'QGhoE13k2ta'
-  };
 
   issueAttributes = {
     issue: 'Rx5m6JIiwsD',
@@ -73,7 +50,7 @@ export class ApiService {
     const params = new HttpParams()
       .set('fields', 'programTrackedEntityAttributes[id,displayName]');
     return this.http
-      .get(API_URL + '/programs/' + program, {params})
+      .get(API_URL + '/programs/' + program, { params })
       .map(response => {
         if (response.hasOwnProperty('programTrackedEntityAttributes')) {
           const attributes = response['programTrackedEntityAttributes'];
@@ -84,11 +61,35 @@ export class ApiService {
       .catch(this.handleError);
   }
 
+  public getAllEvents(program, dataElements): Observable<any[]> {
+    dataElements = _.invert(dataElements);
+    const params = new HttpParams()
+      .set('paging', 'false')
+      .set('ouMode', 'ALL')
+      .set('program', program)
+      .set('fields', ':all');
+    return this.http
+      .get(API_URL + '/events', { params })
+      .map(response => {
+        if (response.hasOwnProperty('events')) {
+          const events = response['events'];
+          return events.map(r => {
+            return {
+              ...r,
+              ..._.fromPairs(_.map(r.dataValues, i => [dataElements[i.dataElement], i.value]))
+            };
+          });
+        }
+      })
+      .catch(this.handleError);
+  }
+
+
   public getEvent(event): Observable<any[]> {
     const params = new HttpParams()
       .set('fields', ':all');
     return this.http
-      .get(API_URL + '/events/' + event, {params})
+      .get(API_URL + '/events/' + event, { params })
       .map(response => {
         return {
           ...response,
@@ -104,7 +105,7 @@ export class ApiService {
       .set('paging', 'false')
       .set('trackedEntityInstance', trackedEntityInstance);
     return this.http
-      .get(API_URL + '/events', {params})
+      .get(API_URL + '/events', { params })
       .map(response => {
         if (response.hasOwnProperty('events')) {
           const events = response['events'];
@@ -128,7 +129,7 @@ export class ApiService {
       .set('filter', 'VLWHxrfUs9T:EQ:' + activityTransaction)
       .set('ouMode', 'ALL');
     return this.http
-      .get(API_URL + '/trackedEntityInstances', {params})
+      .get(API_URL + '/trackedEntityInstances', { params })
       .map(response => {
         if (response.hasOwnProperty('trackedEntityInstances')) {
           const results = response['trackedEntityInstances'];
@@ -137,7 +138,7 @@ export class ApiService {
             return {
               ...r,
               attributes: _.fromPairs(_.map(r.attributes, i => [i.attribute, i.value])),
-              ... _.fromPairs(_.map(r['attributes'], i => [attributes[i.attribute], i.value])),
+              ..._.fromPairs(_.map(r['attributes'], i => [attributes[i.attribute], i.value])),
               orgUnits
             };
           });
@@ -152,12 +153,12 @@ export class ApiService {
     const params = new HttpParams()
       .set('fields', ':all');
     return this.http
-      .get(API_URL + '/trackedEntityInstances/' + entity, {params})
+      .get(API_URL + '/trackedEntityInstances/' + entity, { params })
       .map(response => {
         return {
           ...response,
           attributes: _.fromPairs(_.map(response['attributes'], i => [i.attribute, i.value])),
-          ... _.fromPairs(_.map(response['attributes'], i => [attributes[i.attribute], i.value])),
+          ..._.fromPairs(_.map(response['attributes'], i => [attributes[i.attribute], i.value])),
         };
       })
       .catch(this.handleError);
@@ -171,7 +172,7 @@ export class ApiService {
       .set('program', program);
 
     return this.http
-      .get(API_URL + '/trackedEntityInstances', {params})
+      .get(API_URL + '/trackedEntityInstances', { params })
       .map(response => {
         if (response.hasOwnProperty('trackedEntityInstances')) {
           const results = response['trackedEntityInstances'];
@@ -180,7 +181,7 @@ export class ApiService {
             return {
               ...r,
               attributes: _.fromPairs(_.map(r.attributes, i => [i.attribute, i.value])),
-              ... _.fromPairs(_.map(r.attributes, i => [attributes[i.attribute], i.value])),
+              ..._.fromPairs(_.map(r.attributes, i => [attributes[i.attribute], i.value])),
               orgUnits
             };
           });
@@ -198,7 +199,7 @@ export class ApiService {
       .set('program', 'bsg7cZMTqgI');
 
     return this.http
-      .get(API_URL + '/trackedEntityInstances', {params})
+      .get(API_URL + '/trackedEntityInstances', { params })
       .map(response => {
         if (response.hasOwnProperty('trackedEntityInstances')) {
           const results = response['trackedEntityInstances'];
@@ -219,7 +220,7 @@ export class ApiService {
   public getOrgUnits(units): Observable<any[]> {
     const params = new HttpParams().set('filter', 'id:in:[' + units + ']').set('paging', 'false');
     return this.http
-      .get(API_URL + '/organisationUnits', {params})
+      .get(API_URL + '/organisationUnits', { params })
       .map(response => {
         if (response.hasOwnProperty('organisationUnits')) {
           return _.fromPairs(_.map(response['organisationUnits'], i => [i.id, i.displayName]));
@@ -234,7 +235,7 @@ export class ApiService {
         'children[id,displayName,children[id,displayName,children[id,displayName]]]]]]]')
       .set('paging', 'false');
     return this.http
-      .get(API_URL + '/organisationUnits/' + unit, {params})
+      .get(API_URL + '/organisationUnits/' + unit, { params })
       .map(response => {
         return keysToCamelCase(response);
       })
@@ -246,7 +247,7 @@ export class ApiService {
       .set('filter', 'id:in:[' + elements + ']')
       .set('paging', 'false');
     return this.http
-      .get(API_URL + '/dataElements', {params})
+      .get(API_URL + '/dataElements', { params })
       .map(response => {
         if (response.hasOwnProperty('dataElements')) {
           return response['dataElements'];
@@ -259,7 +260,7 @@ export class ApiService {
     const params = new HttpParams()
       .set('fields', 'options[id,displayName,code]');
     return this.http
-      .get(API_URL + '/optionSets/' + optionSet, {params})
+      .get(API_URL + '/optionSets/' + optionSet, { params })
       .map(response => {
         if (response.hasOwnProperty('options')) {
           return response['options'];
@@ -307,6 +308,17 @@ export class ApiService {
       children: data.children.map(this.convert)
 
     };
+  }
+
+  public getUserDetails() {
+    const params = new HttpParams()
+      .set('fields', 'id,surname,firstName,displayName,userCredentials[userRoles[authorities]]');
+    return this.http
+      .get(API_URL + '/me', { params })
+      .map(response => {
+        return response
+      })
+      .catch(this.handleError);
   }
 
 }

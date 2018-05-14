@@ -8,6 +8,7 @@
     </ngx-treeview>
   </div>
   <div fxFlex style="margin: 5px;">
+    {{currentUser|json}}
     <form [formGroup]="activityForm" (ngSubmit)="onFormSubmit(activityForm.value)">
       <mat-form-field>
         <input matInput placeholder="Activity code" formControlName="activityCode">
@@ -109,7 +110,7 @@
       </mat-error>
 
       <mat-form-field>
-        <input matInput placeholder="Submitted by" formControlName="submittedBy">
+        <input matInput placeholder="Submitted by" formControlName="submittedBy" readonly>
       </mat-form-field>
       <mat-error>
       <span
@@ -125,7 +126,7 @@
       </mat-error>
 
       <mat-form-field>
-        <mat-select placeholder="Objective" formControlName="officerPosition">
+        <mat-select placeholder="Position of submitting officer" formControlName="officerPosition">
           <mat-option *ngFor="let r of positions" [value]="r.code">
             {{ r.displayName }}
           </mat-option>

@@ -1,6 +1,16 @@
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource" matSort>
     <!-- Generic column definition -->
+    <ng-container matColumnDef="transactionCode">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Activity Transaction Code</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.transactionCode}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orgUnit">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Organisation</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.orgUnit}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="issue">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Issue</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.issue}}</mat-cell>
@@ -8,7 +18,7 @@
 
     <ng-container matColumnDef="issueStatus">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Issue Status</mat-header-cell>
-      <mat-cell *matCellDef="let element">
+      <mat-cell *matCellDef="let element" [ngClass]="element.issueStatus">
         {{element.issueStatus}}
       </mat-cell>
     </ng-container>

@@ -14,18 +14,6 @@ import {ActionDialogComponent, ActivityDialogComponent, IssueDialogComponent} fr
 export class ActivityComponent implements OnInit {
 
   events = {};
-  columns = [
-    {columnDef: 'activityCode', header: 'Activity Code', cell: (element) => `${element.activityCode || ''}`},
-    {columnDef: 'transactionCode', header: 'Transaction', cell: (element) => `${element.transactionCode || ''}`},
-    {columnDef: 'activity', header: 'Activity Name', cell: (element) => `${element.activity || ''}`},
-    {columnDef: 'orgUnit', header: 'Unit.', cell: (element) => `${element.orgUnit}`},
-    {columnDef: 'plannedStartDate', header: 'Planned activity start date.', cell: (element) => `${element.plannedStartDate || ''}`},
-    {columnDef: 'plannedEndDate', header: 'Planned activity end date.', cell: (element) => `${element.plannedEndDate || ''}`},
-    {columnDef: 'projectName', header: 'Project.', cell: (element) => `${element.projectName || ''}`},
-    {columnDef: 'resultArea', header: 'Result Area.', cell: (element) => `${element.resultArea || ''}`},
-    {columnDef: 'objective', header: 'Objective.', cell: (element) => `${element.objective || ''}`},
-    {columnDef: 'implementor', header: 'Implementer.', cell: (element) => `${element.implementor || ''}`}
-  ];
 
   activityAttributes = {
     activityCode: 'BM1qjC9ke9m',
@@ -40,6 +28,17 @@ export class ActivityComponent implements OnInit {
     officerPosition: 'gGxE6DkOZqB'
   };
 
+  reportDataElements = {
+    reportStartDate: 'BNoMKfDs0Oj',
+    reportEndDate: 'kc42dsL4xqA',
+    reportDistrict: 'TjoNheffZEE',
+    reportDate: 'bmYlImBre1I',
+    achievementsSummary: 'O7QsM6bgg6C',
+    achievements: 'ShLKMDTLfEp',
+    constraints: 'R9vh1aiBWJT',
+    lessons: 'F7RpXNihiHI'
+  };
+
   displayedColumns = [
     'activityCode',
     'transactionCode',
@@ -51,6 +50,7 @@ export class ActivityComponent implements OnInit {
     'resultArea',
     'objective',
     'implementor',
+    'status',
     'action'
   ];
 
@@ -71,12 +71,24 @@ export class ActivityComponent implements OnInit {
         }
       );
 
-
+    this.api
+      .getAllEvents('MLb410Oz6cU', this.reportDataElements)
+      .subscribe(
+        (events) => {
+          this.events = _.groupBy(events, 'trackedEntityInstance');
+        }
+      );
     this.api
       .getTrackedEntities('MLb410Oz6cU', this.activityAttributes)
       .subscribe(
         (activities) => {
           if (activities.length > 0) {
+            activities = activities.map(r => {
+              return {
+                ...r,
+                status: this.getStatus(r)
+              };
+            });
             this.api
               .getOrgUnits(activities[0].orgUnits)
               .subscribe(
@@ -95,25 +107,20 @@ export class ActivityComponent implements OnInit {
   }
 
   getStatus(o) {
-    const result = {eventDate: '', status: ''};
     let events = _.orderBy(this.events[o.trackedEntityInstance], ['eventDate'], ['asc']);
     events = _.filter(events, function (e) {
-      return e.eventDate !== null;
+      return e.reportStartDate !== null;
     });
     const date = Moment().format('YYYY-MM-DD');
-    if (o.startDate) {
-      if (events.length > 0) {
-        result.status = 'active';
-        result.eventDate = events[0].eventDate;
+    if (events.length > 0) {
+      return 'complete';
+    } else {
+      if (o.plannedStartDate >= date) {
+        return 'pending';
       } else {
-        if (o.startDate >= date) {
-          result.status = 'pending';
-        } else {
-          result.status = 'overdue';
-        }
+        return 'overdue';
       }
     }
-    return result;
   }
 
   applyFilter(filterValue: string) {

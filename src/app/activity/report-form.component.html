@@ -1,5 +1,5 @@
 <div fxFlex style="margin: 5px;">
-  <form [formGroup]="reportForm" (ngSubmit)="onFormSubmit(reportForm.value)">
+  <form [formGroup]="reportForm">
     <mat-form-field>
       <input matInput [matDatepicker]="picker2" placeholder="Report start date"
              formControlName="startDate">

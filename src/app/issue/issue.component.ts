@@ -34,7 +34,7 @@ export class IssueComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns = ['issue', 'issueStatus', 'action'];
+  displayedColumns = ['transactionCode', 'orgUnit', 'issue', 'issueStatus', 'action'];
 
   constructor(private api: ApiService, public router: Router, private route: ActivatedRoute) {
   }
@@ -44,7 +44,6 @@ export class IssueComponent implements OnInit {
       .getTrackedEntities('bsg7cZMTqgI', this.issueAttributes)
       .subscribe(
         (issues) => {
-          console.log(issues);
           if (issues.length > 0) {
             this.api
               .getOrgUnits(issues[0].orgUnits)

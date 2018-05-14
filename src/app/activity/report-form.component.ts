@@ -32,36 +32,8 @@ export class ReportFormComponent implements OnInit {
   }
 
   public ngOnInit() {
-    // this.createForm();
-
     this.api.getOptions('NgCRbyGZhIM').subscribe((options) => {
       this.districts = options;
     });
-  }
-
-  onFormSubmit(form: NgForm) {
-    /*let attributes = [];
-    form.plannedStartDate = Moment(form.plannedStartDate).format('YYYY-MM-DD');
-    form.plannedEndDate = Moment(form.plannedEndDate).format('YYYY-MM-DD');
-    const date = Moment().format('YYYY-MM-DD');
-    _.forOwn(this.attributeIds, function (attribute, key) {
-      if (form[key]) {
-        attributes = [...attributes, {attribute, value: form[key]}];
-      }
-    });
-
-    const trackedEntityInstances = this.orgUnits.map(val => {
-      const enrollments = [{
-        orgUnit: val,
-        program: 'MLb410Oz6cU',
-        enrollmentDate: date,
-        incidentDate: date
-      }];
-      return {orgUnit: val, trackedEntityType: 'MCPQUTHX1Ze', attributes, enrollments};
-    });
-
-    const instances = {trackedEntityInstances: trackedEntityInstances};
-    this.api.postTrackedEntity(instances)
-      .subscribe(hero => console.log(hero));*/
   }
 }

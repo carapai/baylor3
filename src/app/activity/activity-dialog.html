@@ -9,7 +9,7 @@
     </ngx-treeview>
   </div>
   <div fxFlex style="margin: 5px;">
-    <form [formGroup]="activityForm" (ngSubmit)="onFormSubmit(activityForm.value)">
+    <form [formGroup]="activityForm">
       <mat-form-field>
         <input matInput placeholder="Activity code" formControlName="activityCode">
       </mat-form-field>

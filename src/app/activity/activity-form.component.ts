@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import * as _ from 'lodash';
 import * as Moment from 'moment';
-import {ApiService} from '../api.service';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
-import {TreeviewItem} from 'ngx-treeview';
-import {Router} from '@angular/router';
+import { ApiService } from '../api.service';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { TreeviewItem } from 'ngx-treeview';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-activity-form',
@@ -40,12 +40,12 @@ export class ActivityFormComponent implements OnInit {
   positions = [];
   orgUnits = [];
 
+  currentUser = {};
+
   constructor(private api: ApiService, private fb: FormBuilder, public router: Router, public snackBar: MatSnackBar) {
   }
 
   public ngOnInit() {
-    this.createForm();
-
     this.api
       .getOrgUnitChildren('HrlmR2Iolvn')
       .subscribe(
@@ -65,6 +65,14 @@ export class ActivityFormComponent implements OnInit {
     this.api.getOptions('ohw99gJ7W8F').subscribe((options) => {
       this.positions = options;
     });
+
+    this.api.getUserDetails().subscribe(u => {
+      const submittedBy = this.activityForm.get('submittedBy');
+      submittedBy.setValue(u.displayName);
+    });
+
+    this.createForm();
+
   }
 
   createForm() {
@@ -81,7 +89,7 @@ export class ActivityFormComponent implements OnInit {
       projectName: [null],
       resultArea: [null],
       objective: [null],
-      submittedBy: [null],
+      submittedBy: [this.currentUser['displayName' || '']],
       implementor: [null],
       officerPosition: [null],
     });
@@ -91,11 +99,10 @@ export class ActivityFormComponent implements OnInit {
     let attributes = [];
     form['plannedStartDate'] = Moment(form['plannedStartDate']).format('YYYY-MM-DD');
     form['plannedEndDate'] = Moment(form['plannedEndDate']).format('YYYY-MM-DD');
-    console.log(form);
     const date = Moment().format('YYYY-MM-DD');
     _.forOwn(this.attributeIds, function (attribute, key) {
       if (form[key]) {
-        attributes = [...attributes, {attribute, value: form[key]}];
+        attributes = [...attributes, { attribute, value: form[key] }];
       }
     });
 
@@ -106,10 +113,10 @@ export class ActivityFormComponent implements OnInit {
         enrollmentDate: date,
         incidentDate: date
       }];
-      return {orgUnit: val, trackedEntityType: 'MCPQUTHX1Ze', attributes, enrollments};
+      return { orgUnit: val, trackedEntityType: 'MCPQUTHX1Ze', attributes, enrollments };
     });
 
-    const instances = {trackedEntityInstances: trackedEntityInstances};
+    const instances = { trackedEntityInstances: trackedEntityInstances };
     this.api.postTrackedEntity(instances)
       .subscribe(hero => {
         this.snackBar.open('Activities created', 'OK', {

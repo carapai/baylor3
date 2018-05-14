@@ -35,20 +35,16 @@ mat-row:nth-child(odd){
   background-color:#b8d1f3;
 }*/
 
-.active {
+.complete, .active, .resolved, .Resolved {
   background-color: green;
 }
 
-.progress {
+.progress, .pending, .Pending {
   background-color: yellow;
 }
 
-.overdue {
+.overdue, .closed, .Closed {
   background-color: red;
-}
-
-.pending {
-  background-color: brown;
 }
 
 .mat-column-orgUnit {
@@ -63,6 +59,6 @@ mat-row:nth-child(odd){
 }
 
 /*.mat-row {*/
-  /*cursor: pointer;*/
+/*cursor: pointer;*/
 /*}*/
 

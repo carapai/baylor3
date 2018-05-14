@@ -63,6 +63,11 @@
       <mat-cell *matCellDef="let element"> {{element.objective}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="element.status"> {{element.status}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="implementor">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Implementor</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.implementor}}</mat-cell>
