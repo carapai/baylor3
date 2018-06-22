@@ -1,3 +1,55 @@
-<p>
-  report works!
-</p>
+<div class="example-container mat-elevation-z8">
+  <mat-toolbar>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+    <span class="example-spacer"></span>
+    <!--<button mat-button
+            (click)="openActivityDialog({})">Add Issue
+    </button>-->
+    <a routerLink="/add/activity" mat-icon-button>
+      <mat-icon>add</mat-icon>
+    </a>
+  </mat-toolbar>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="activity">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Activity</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.activity}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reportStartDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Activity Start Date</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.reportStartDate}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reportEndDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Activity End Date</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.reportEndDate}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orgUnitName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Location</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.orgUnitName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>&nbsp;</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <!-- <a href="{{element.download}}">Download Report</a> -->
+        <button type="button" mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <a mat-menu-item href="{{element.download}}">Download Report</a>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50]" [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>

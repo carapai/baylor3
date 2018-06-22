@@ -3,12 +3,14 @@
   <span class="example-spacer"></span>
   <a routerLink="/activities" mat-button>Activities</a>
   <a routerLink="/issues" mat-button>Issues</a>
+  <a routerLink="/reports" mat-button>Reports</a>
+  <a routerLink="/settings" mat-button>Settings</a>
   <button mat-button [matMenuTriggerFor]="appMenu">
     <mat-icon>menu</mat-icon>
     Menu
   </button>
 </mat-toolbar>
 <mat-menu #appMenu="matMenu">
-  <a mat-menu-item href="https://mis.baylor-uganda.org/trackers/dhis-web-dashboard">Home</a>
+  <a mat-menu-item href="{{home}}">Home</a>
 </mat-menu>
 <router-outlet></router-outlet>

@@ -3,9 +3,8 @@ import {ApiService} from '../api.service';
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import * as Moment from 'moment';
-import * as _ from 'lodash';
 
-@Component({
+/*@Component({
   selector: 'app-activity-dialog',
   templateUrl: 'activity-dialog.html',
 })
@@ -97,7 +96,7 @@ export class ActivityDialogComponent implements OnInit {
   onFilterChange(e) {
     console.log(e);
   }
-}
+}*/
 
 @Component({
   selector: 'app-issue-dialog',
@@ -107,6 +106,7 @@ export class IssueDialogComponent implements OnInit {
   issueForm: FormGroup;
   areas = [];
   issueStatus = [];
+  reports = [];
 
   constructor(private api: ApiService, public dialogRef: MatDialogRef<IssueDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder) {
@@ -119,6 +119,7 @@ export class IssueDialogComponent implements OnInit {
     this.api.getOptions('qiInvioKxhh').subscribe((options) => {
       this.issueStatus = options;
     });
+    this.reports = [{report: this.data['report']['event'], displayName: this.data['report']['dataValues']['reportTitle']}];
     this.createForm();
   }
 
@@ -132,9 +133,11 @@ export class IssueDialogComponent implements OnInit {
       issue: [this.data['issue'], Validators.required],
       technicalArea: [this.data['technicalArea'], Validators.required],
       transactionCode: [this.data['transactionCode'], Validators.required],
-      report: [this.data['report'], Validators.required],
+      report: [this.data['report']['event'], Validators.required],
       trackedEntityInstance: [this.data['trackedEntityInstance']],
-      issueStatus: [this.data['issueStatus']],
+      issueStatus: [this.data['issueStatus'] || 'New'],
+      responsiblePerson: [this.data['responsiblePerson']],
+      expectedResolutionDate: [this.data['expectedResolutionDate']],
     });
   }
 
@@ -170,13 +173,13 @@ export class ActionDialogComponent implements OnInit {
   createForm() {
     this.actionForm = this.fb.group({
       action: [this.data['action'], Validators.required],
-      expectedCompletionDate: [this.data['expectedCompletionDate'] || Moment(), Validators.required],
-      responsiblePerson: [this.data['responsiblePerson'], Validators.required],
-      actionStatus: [this.data['actionStatus'], Validators.required],
-      outcome: [this.data['outcome'], Validators.required],
-      outcomeDate: [this.data['outcomeDate'] || Moment(), Validators.required],
+      currentIssueStatus: [this.data['currentIssueStatus'], Validators.required],
       event: [this.data['event']],
+      actionTakenBy: [this.data['actionTakenBy']],
+      actionDescription: [this.data['actionDescription']],
       eventDate: [this.data['eventDate'] || Moment()],
+      actionStartDate: [this.data['actionStartDate'] || Moment()],
+      actionEndDate: [this.data['actionEndDate'] || Moment()],
     });
   }
 

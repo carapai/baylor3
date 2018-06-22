@@ -3,9 +3,9 @@
   "name":"baylor",
   "description":"Issue Tracker",
   "icons":{
-    "16":"img/icons/hki-16.png",
-    "48":"img/icons/hki-48.png",
-    "128":"img/icons/hki-128.png"
+    "16":"img/icons/baylor-16.png",
+    "48":"img/icons/baylor-48.png",
+    "128":"img/icons/baylor-128.png"
   },
   "developer":{
     "url":"http://www.nrc.no",

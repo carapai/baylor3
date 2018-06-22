@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: '/trackers/api'
+  apiUrl: '/trackers/api',
+  dhis2: '/trackers'
 };

@@ -7,7 +7,9 @@ import {
   MatMenuModule, MatOptionModule,
   MatPaginatorModule, MatSelectModule, MatSidenavModule, MatSnackBarModule, MatSortModule,
   MatTableModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatGridListModule,
+  MatAutocompleteModule
 } from '@angular/material';
 
 @NgModule({
@@ -29,7 +31,9 @@ import {
     MatDialogModule,
     MatListModule,
     MatSnackBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatGridListModule,
+    MatAutocompleteModule
   ],
   exports: [MatButtonModule,
     MatToolbarModule,
@@ -49,7 +53,9 @@ import {
     MatDialogModule,
     MatListModule,
     MatSnackBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatGridListModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialAppModule {

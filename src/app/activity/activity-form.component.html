@@ -1,5 +1,13 @@
 <div fxLayout="row">
   <div fxFlex="20" style="margin: 5px;">
+    <br>
+    <mat-select placeholder="Level" (selectionChange)="getOrgUnits($event.value)" [(ngModel)]="selectedLevel">
+      <mat-option *ngFor="let l of levels" [value]="l">
+        {{ l.displayName }}
+      </mat-option>
+    </mat-select>
+    <br>
+    <br>
     <ngx-treeview
       [config]="config"
       [items]="items"
@@ -8,11 +16,16 @@
     </ngx-treeview>
   </div>
   <div fxFlex style="margin: 5px;">
-    {{currentUser|json}}
-    <form [formGroup]="activityForm" (ngSubmit)="onFormSubmit(activityForm.value)">
+    <form [formGroup]="activityForm" (ngSubmit)="onFormSubmit()">
+
       <mat-form-field>
-        <input matInput placeholder="Activity code" formControlName="activityCode">
+        <mat-select placeholder="Activity code" formControlName="activityCode">
+          <mat-option *ngFor="let a of activities" [value]="a.activityCode">
+            {{ a.activityCode }} - {{a.activityName}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
+
       <mat-error>
         <span *ngIf="!activityForm.get('activityCode').valid && activityForm.get('activityCode').touched">Please provide activity code</span>
       </mat-error>
@@ -25,14 +38,18 @@
       </mat-error>
 
       <mat-form-field>
-        <input matInput placeholder="Activity" formControlName="activity">
+        <input matInput placeholder="Activity" formControlName="activity" readonly>
       </mat-form-field>
       <mat-error>
         <span *ngIf="!activityForm.get('activity').valid && activityForm.get('activity').touched">Please provide activity name</span>
       </mat-error>
 
       <mat-form-field>
-        <input matInput placeholder="Where" formControlName="where">
+        <mat-select placeholder="Where" formControlName="where" multiple>
+          <mat-option *ngFor="let r of orgUnits" [value]="r.value">
+            {{ r.displayName }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-error>
       <span
@@ -40,7 +57,7 @@
       </mat-error>
 
       <mat-form-field>
-        <input matInput [matDatepicker]="picker1" placeholder="Pick submission date" formControlName="submissionDate">
+        <input matInput [matDatepicker]="picker1" [max]="maxDate" placeholder="Pick submission date" formControlName="submissionDate">
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
       </mat-form-field>
@@ -49,7 +66,7 @@
       </mat-error>
 
       <mat-form-field>
-        <input matInput [matDatepicker]="picker2" placeholder="Pick planned start date"
+        <input matInput [matDatepicker]="picker2" [min]="maxDate" placeholder="Pick planned start date"
                formControlName="plannedStartDate">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
@@ -59,7 +76,7 @@
       </mat-error>
 
       <mat-form-field>
-        <input matInput [matDatepicker]="picker3" placeholder="Pick planned end date" formControlName="plannedEndDate">
+        <input matInput [matDatepicker]="picker3" [matDatepickerFilter]="myFilter" placeholder="Pick planned end date" formControlName="plannedEndDate">
         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
         <mat-datepicker #picker3></mat-datepicker>
       </mat-form-field>
@@ -76,7 +93,7 @@
       </mat-error>
 
       <mat-form-field>
-        <input matInput placeholder="Project name" formControlName="projectName">
+        <input matInput placeholder="Project name" formControlName="projectName" readonly>
       </mat-form-field>
       <mat-error>
       <span
@@ -84,11 +101,15 @@
       </mat-error>
 
       <mat-form-field>
-        <mat-select placeholder="Result area" formControlName="resultArea">
-          <mat-option *ngFor="let r of resultAreas" [value]="r.code">
-            {{ r.displayName }}
-          </mat-option>
-        </mat-select>
+        <input matInput placeholder="Result area" formControlName="resultArea" readonly>
+
+        <!--<input type="text" placeholder="Result area" aria-label="Number" matInput formControlName="resultArea"-->
+        <!--[matAutocomplete]="auto">-->
+        <!--<mat-autocomplete #auto="matAutocomplete">-->
+        <!--<mat-option *ngFor="let r of resultAreas | async" [value]="r.code">-->
+        <!--{{ r.displayName }}-->
+        <!--</mat-option>-->
+        <!--</mat-autocomplete>-->
       </mat-form-field>
 
       <mat-error>
@@ -97,11 +118,14 @@
       </mat-error>
 
       <mat-form-field>
-        <mat-select placeholder="Objective" formControlName="objective">
-          <mat-option *ngFor="let r of objectives" [value]="r.code">
-            {{ r.displayName }}
-          </mat-option>
-        </mat-select>
+        <input matInput placeholder="Objective" formControlName="objective" readonly>
+        <!--<input type="text" placeholder="Objective" aria-label="Number" matInput formControlName="objective"-->
+        <!--[matAutocomplete]="autoObjective">-->
+        <!--<mat-autocomplete #autoObjective="matAutocomplete">-->
+        <!--<mat-option *ngFor="let r of objectives | async" [value]="r.code">-->
+        <!--{{ r.code }}-->
+        <!--</mat-option>-->
+        <!--</mat-autocomplete>-->
       </mat-form-field>
 
       <mat-error>
@@ -118,26 +142,36 @@
       </mat-error>
 
       <mat-form-field>
-        <input matInput placeholder="Implementor" formControlName="implementor">
+        <!--<input matInput placeholder="Implementor" formControlName="implementor">-->
+        <input type="text" placeholder="Implementor" aria-label="Number" matInput
+               formControlName="implementor" [matAutocomplete]="autoUser">
+        <mat-autocomplete #autoUser="matAutocomplete">
+          <mat-option *ngFor="let r of users | async" [value]="r.displayName">
+            {{ r.displayName }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
       <mat-error>
       <span
         *ngIf="!activityForm.get('implementor').valid && activityForm.get('implementor').touched">Please provide implementor</span>
       </mat-error>
 
+
       <mat-form-field>
-        <mat-select placeholder="Position of submitting officer" formControlName="officerPosition">
-          <mat-option *ngFor="let r of positions" [value]="r.code">
-            {{ r.displayName }}
+        <input type="text" placeholder="Position of submitting officer" aria-label="Number" matInput
+               formControlName="officerPosition" [matAutocomplete]="autoPosition">
+        <mat-autocomplete #autoPosition="matAutocomplete">
+          <mat-option *ngFor="let r of positions | async" [value]="r.code">
+            {{ r.code }}
           </mat-option>
-        </mat-select>
+        </mat-autocomplete>
       </mat-form-field>
 
       <mat-error>
       <span
         *ngIf="!activityForm.get('officerPosition').valid && activityForm.get('officerPosition').touched">Please select position of submitting officer</span>
       </mat-error>
-      <button mat-raised-button color="accent" [disabled]="!activityForm.valid">Submit</button>
+      <button mat-raised-button color="accent">Submit</button>
     </form>
   </div>
 </div>

@@ -9,7 +9,7 @@ import {TreeviewItem} from 'ngx-treeview';
 @Component({
   selector: 'app-activity-form',
   templateUrl: './report-form.component.html',
-  styleUrls: ['./activity.component.scss']
+  styleUrls: ['./activity.component.css']
 })
 export class ReportFormComponent implements OnInit {
   reportForm: FormGroup;

@@ -1,15 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import * as _ from 'lodash';
 import * as Moment from 'moment';
-import {ApiService} from '../api.service';
-import {Router} from '@angular/router';
-import {ActionDialogComponent, ActivityDialogComponent, IssueDialogComponent} from './dialogs.component';
+import { ApiService } from '../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
-  styleUrls: ['./activity.component.scss']
+  styleUrls: ['./activity.component.css']
 })
 export class ActivityComponent implements OnInit {
 
@@ -46,9 +45,9 @@ export class ActivityComponent implements OnInit {
     'orgUnit',
     'plannedStartDate',
     'plannedEndDate',
-    'projectName',
-    'resultArea',
-    'objective',
+    // 'projectName',
+    // 'resultArea',
+    // 'objective',
     'implementor',
     'status',
     'action'
@@ -94,7 +93,7 @@ export class ActivityComponent implements OnInit {
               .subscribe(
                 (orgUnits) => {
                   const all = activities.map((e) => {
-                    return {...e, orgUnit: orgUnits[e.orgUnit]};
+                    return { ...e, orgUnit: orgUnits[e.orgUnit] };
                   });
                   this.dataSource = new MatTableDataSource<any>(all);
                   this.dataSource.paginator = this.paginator;
@@ -111,12 +110,17 @@ export class ActivityComponent implements OnInit {
     events = _.filter(events, function (e) {
       return e.reportStartDate !== null;
     });
-    const date = Moment().format('YYYY-MM-DD');
+    const date = Moment();
     if (events.length > 0) {
       return 'complete';
     } else {
-      if (o.plannedStartDate >= date) {
-        return 'pending';
+      const d = Moment(o.plannedStartDate);
+      if (d >= date) {
+        if (d.diff(date, 'days') <= 7) {
+          return 'approaching';
+        } else {
+          return 'on schedule';
+        }
       } else {
         return 'overdue';
       }
@@ -132,14 +136,4 @@ export class ActivityComponent implements OnInit {
   selectRow(row) {
     this.router.navigate(['/activities', row.attributes['VLWHxrfUs9T']]);
   }
-
-  openActivityDialog(data) {
-    const dialogRef = this.dialog.open(ActivityDialogComponent, {
-      data,
-      width: '99%'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
-
 }

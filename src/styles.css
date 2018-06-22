@@ -1,64 +1,92 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
-/*.example-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 500px;
-  min-width: 300px;
-}*/
-
-/*.mat-table {
-  overflow: auto;
-  max-height: 500px;
-}*/
+body {
+  font-family: Roboto, Arial, sans-serif;
+  margin: 0;
+}
 
 mat-form-field {
   font-size: 14px;
   width: 100%;
 }
 
-/*.mat-table {
-  overflow: auto;
-  max-height: 500px;
-}*/
-
 .example-spacer {
   flex: 1 1 auto;
 }
 
-/*mat-row:nth-child(even){
+mat-row:nth-child(even){
   background-color:#dae5f4;
 }
 
 mat-row:nth-child(odd){
   background-color:#b8d1f3;
-}*/
+}
 
-.complete, .active, .resolved, .Resolved {
+.complete,
+.active,
+.resolved,
+.Resolved {
   background-color: green;
 }
 
-.progress, .pending, .Pending {
+.progress,
+.pending,
+.Pending {
   background-color: yellow;
 }
 
-.overdue, .closed, .Closed {
+.overdue,
+.closed,
+.Closed {
   background-color: red;
+}
+
+.approaching {
+  background-color: orange;
 }
 
 .mat-column-orgUnit {
   flex: 0 0 40%;
 }
 
-.mat-cell, .mat-header-cell {
+.mat-cell,
+.mat-header-cell {
   flex: 2;
   min-height: 48px;
   display: flex;
   align-items: center;
 }
 
+button,
+button:active,
+button:focus,
+button:hover,
+.btn,
+.btn:active,
+.btn:focus,
+.btn:hover {
+  outline: none !important;
+}
+
+.mat-column-actions,
+.mat-column-action {
+  flex: 0 0 4s0px !important;
+  white-space: unset !important;
+}
+
 /*.mat-row {*/
+
 /*cursor: pointer;*/
+
 /*}*/
 
+
+mat-drawer {
+  width: 200px;
+  background-color: white
+}
+
+mat-drawer-content {
+  background-color: white
+}

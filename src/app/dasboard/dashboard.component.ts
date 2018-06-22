@@ -23,13 +23,13 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.api
-      .getOrgUnitChildren('HrlmR2Iolvn')
-      .subscribe(
-        (units) => {
-          this.items = [units];
-        }
-      );
+    // this.api
+    //   .getOrgUnitChildren('HrlmR2Iolvn')
+    //   .subscribe(
+    //     (units) => {
+    //       this.items = [units];
+    //     }
+    //   );
   }
 
   onSelectedChange(e) {

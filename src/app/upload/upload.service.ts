@@ -14,6 +14,8 @@ export class UploadService {
   constructor(private http: HttpClient) {
   }
 
+  uid;
+
   public upload(files: Set<File>): { [key: string]: Observable<number> } {
     const status = {};
 
@@ -41,17 +43,16 @@ export class UploadService {
           // pass the percentage into the progress-stream
           progress.next(percentDone);
         } else if (event instanceof HttpResponse) {
-
           // Close the progress-stream if we get an answer form the API
           // The upload is complete
+          status[file.name] = {
+            uid: event['body']['response']['fileResource']['id']
+          };
           progress.complete();
         }
       });
-
       // Save every progress-observable in a map of all observables
-      status[file.name] = {
-        progress: progress.asObservable()
-      };
+      status[file.name] = {...status[file.name], progress: progress.asObservable()};
     });
 
     return status;

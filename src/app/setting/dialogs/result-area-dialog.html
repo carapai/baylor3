@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Adding Result Area</h1>
+<div mat-dialog-content>
+  <form [formGroup]="resultAreaForm">
+    <mat-form-field>
+      <input matInput placeholder="Result Area Code" formControlName="resultAreaCode">
+    </mat-form-field>
+    <mat-error>
+      <span *ngIf="!resultAreaForm.get('resultAreaCode').valid && resultAreaForm.get('resultAreaCode').touched">Please provide resultArea code</span>
+    </mat-error>
+
+    <mat-form-field>
+      <input matInput placeholder="Result Area Name" formControlName="resultAreaName">
+    </mat-form-field>
+    <mat-error>
+      <span *ngIf="!resultAreaForm.get('resultAreaName').valid && resultAreaForm.get('resultAreaName').touched">Please provide result area name</span>
+    </mat-error>
+
+    <mat-form-field>
+      <mat-select placeholder="Objective" formControlName="objective">
+        <mat-option *ngFor="let r of objectives" [value]="r">
+          {{ r.objectiveName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-error>
+      <span *ngIf="!resultAreaForm.get('objective').valid && resultAreaForm.get('objective').touched">Please select objective</span>
+    </mat-error>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="resultAreaForm.value" cdkFocusInitial>OK</button>
+</div>

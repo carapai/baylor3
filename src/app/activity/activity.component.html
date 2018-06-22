@@ -48,7 +48,7 @@
       <mat-cell *matCellDef="let element"> {{element.plannedEndDate}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="projectName">
+    <!-- <ng-container matColumnDef="projectName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Project</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.projectName}}</mat-cell>
     </ng-container>
@@ -61,7 +61,7 @@
     <ng-container matColumnDef="objective">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Objective</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.objective}}</mat-cell>
-    </ng-container>
+    </ng-container> -->
 
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
@@ -77,9 +77,16 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Details</mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <a [routerLink]="['/activities', element.trackedEntityInstance]">
+        <!-- <a [routerLink]="['/activities', element.trackedEntityInstance]">
           Details
-        </a>
+        </a> -->
+
+        <button type="button" mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <a mat-menu-item [routerLink]="['/activities', element.trackedEntityInstance]">Add/View Report</a>
+        </mat-menu>
       </mat-cell>
     </ng-container>
 

@@ -1,0 +1,32 @@
+<div style="margin-top: 10px;margin-right: 5px;margin-left: 5px;">
+  <button type="button" (click)="openDialog()">Add</button>
+  <div class="example-container">
+    <mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="resultAreaCode">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Result Code</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.resultAreaCode}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="resultAreaName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Result Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.resultAreaName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="objectiveCode">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Objective Code</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.objective.objectiveCode}}</mat-cell>
+      </ng-container>
+      <!-- <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Details</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <a [routerLink]="['/activities', element.trackedEntityInstance]">
+            Details
+          </a>
+        </mat-cell>
+      </ng-container> -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20,50]" [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div>
+</div>

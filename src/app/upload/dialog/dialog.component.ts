@@ -18,6 +18,7 @@ export class DialogComponent {
   showCancelButton = true;
   uploading = false;
   uploadSuccessful = false;
+  uids = [];
 
   constructor(public dialogRef: MatDialogRef<DialogComponent>, public uploadService: UploadService) {
   }
@@ -38,7 +39,7 @@ export class DialogComponent {
   closeDialog() {
     // if everything was uploaded already, just close the dialog
     if (this.uploadSuccessful) {
-      return this.dialogRef.close();
+      return this.dialogRef.close(this.progress);
     }
 
     // set the component state to "uploading"
@@ -51,6 +52,8 @@ export class DialogComponent {
     let allProgressObservables = [];
     for (let key in this.progress) {
       allProgressObservables.push(this.progress[key].progress);
+
+      this.uids = this.progress[key]['uid'];
     }
 
     // Adjust the state variables

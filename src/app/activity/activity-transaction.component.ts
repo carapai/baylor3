@@ -10,7 +10,7 @@ import {ActionDialogComponent, IssueDialogComponent, ReportDialogComponent} from
 @Component({
   selector: 'app-activity-transaction',
   templateUrl: './activity-transaction.component.html',
-  styleUrls: ['./activity.component.scss']
+  styleUrls: ['./activity.component.css']
 })
 export class ActivityTransactionComponent implements OnInit {
   activity = {};
